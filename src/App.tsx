@@ -1,24 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import ExpenseForm from "./components/ExpenseForm";
+import ExpensesView from "./components/ExpensesView";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="d-flex flex-column mx-4 justify-content-center align-items-center">
+      <div className="container mt-5 pb-3 bg-dark rounded mx-3">
+        <h1 className="text-center text-white my-3">Money Tracker</h1>
+        <ExpenseForm />
+      </div>
+      <div className="container mt-3 pb-3 rounded mx-3">
+        <ExpensesView />
+      </div>
     </div>
   );
 }
