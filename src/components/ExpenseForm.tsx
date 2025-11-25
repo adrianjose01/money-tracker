@@ -2,9 +2,11 @@ import React, { ChangeEvent, useContext, useState } from "react";
 import IExpense from "../types/IExpense";
 import { DataContext } from "../context/DataContext";
 import { v4 as uuidv4 } from "uuid";
+import IWeek from "../types/IWeek";
 
 const ExpenseForm = () => {
-  const { postExpense, onClearList } = useContext(DataContext);
+  const { postExpense, onClearList, postWeek, expenses } =
+    useContext(DataContext);
   const [expense, setExpense] = useState<IExpense>({
     amount: 0,
     description: "",
@@ -19,6 +21,15 @@ const ExpenseForm = () => {
       description: "",
       id: uuidv4(),
     });
+  };
+
+  const onSaveWeek = () => {
+    const newWeek: IWeek = {
+      date: new Date().toLocaleDateString(),
+      expenses,
+    };
+    postWeek(newWeek);
+    onClearList();
   };
 
   const onUpdateExpense = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +66,11 @@ const ExpenseForm = () => {
         />
       </label>
       <button className="btn btn-secondary w-100 my-2">Enter</button>
-      <button className="btn btn-success w-100 my-2" type="button">
+      <button
+        onClick={onSaveWeek}
+        className="btn btn-success w-100 my-2"
+        type="button"
+      >
         Save Week
       </button>
       <button

@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpensesView from "./components/ExpensesView";
+import WeeksView from "./components/WeeksView";
 
 function App() {
   return (
@@ -10,6 +11,19 @@ function App() {
         <ExpenseForm />
       </div>
       <div className="container mt-3 pb-3 rounded mx-3">
+        <div
+          className="btn-group mb-3"
+          role="group"
+          aria-label="Basic mixed styles example"
+        >
+          <button type="button" className="btn btn-secondary">
+            Expenses
+          </button>
+          <button type="button" className="btn btn-primary">
+            Weeks
+          </button>
+        </div>
+        <WeeksView />
         <ExpensesView />
       </div>
     </div>

@@ -1,5 +1,6 @@
 import { createContext, FC, ReactNode, useEffect, useState } from "react";
 import IExpense from "../types/IExpense";
+import IWeek from "../types/IWeek";
 
 export const DataContext = createContext<{
   expenses: IExpense[];
@@ -7,12 +8,16 @@ export const DataContext = createContext<{
   fetchExpenses: () => void;
   deleteExpense: (id: string) => void;
   onClearList: () => void;
+  weeks: IWeek[];
+  postWeek: (week: IWeek) => void;
 }>({
   expenses: [],
   postExpense: () => {},
   fetchExpenses: () => {},
   deleteExpense: () => {},
   onClearList: () => {},
+  weeks: [],
+  postWeek: () => {},
 });
 
 interface Props {
@@ -21,6 +26,7 @@ interface Props {
 
 const DataProvider: FC<Props> = ({ children }) => {
   const [expenses, setExpenses] = useState<IExpense[]>([]);
+  const [weeks, setWeeks] = useState<IWeek[]>([]);
 
   const fetchExpenses = () => {
     const expensesString = localStorage.getItem("expenses");
@@ -29,6 +35,16 @@ const DataProvider: FC<Props> = ({ children }) => {
       setExpenses(allExpenses);
     } else {
       localStorage.setItem("expenses", JSON.stringify([]));
+    }
+  };
+
+  const fetchWeeks = () => {
+    const weeksString = localStorage.getItem("weeks");
+    if (weeksString) {
+      const allWeeks = JSON.parse(weeksString);
+      setWeeks(allWeeks);
+    } else {
+      localStorage.setItem("weeks", JSON.stringify([]));
     }
   };
 
@@ -42,6 +58,16 @@ const DataProvider: FC<Props> = ({ children }) => {
         JSON.stringify([...prevExpenses, expense])
       );
       return [...prevExpenses, expense];
+    });
+  };
+
+  const postWeek = (week: IWeek) => {
+    if (week.expenses.length < 1) {
+      return alert("weeks values can be empty");
+    }
+    setWeeks((prevWeeks) => {
+      localStorage.setItem("weeks", JSON.stringify([...prevWeeks, week]));
+      return [...prevWeeks, week];
     });
   };
 
@@ -60,11 +86,8 @@ const DataProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     fetchExpenses();
+    fetchWeeks();
   }, []);
-
-  useEffect(() => {
-    console.log(expenses);
-  }, [expenses]);
 
   return (
     <DataContext.Provider
@@ -74,6 +97,8 @@ const DataProvider: FC<Props> = ({ children }) => {
         fetchExpenses,
         deleteExpense,
         onClearList,
+        weeks,
+        postWeek,
       }}
     >
       {children}
