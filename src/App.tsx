@@ -2,8 +2,10 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ExpenseForm from "./components/ExpenseForm";
 import ExpensesView from "./components/ExpensesView";
 import WeeksView from "./components/WeeksView";
+import { useState } from "react";
 
 function App() {
+  const [view, setView] = useState("Expenses");
   return (
     <div className="d-flex flex-column mx-4 justify-content-center align-items-center">
       <div className="container mt-5 pb-3 bg-dark rounded mx-3">
@@ -16,15 +18,23 @@ function App() {
           role="group"
           aria-label="Basic mixed styles example"
         >
-          <button type="button" className="btn btn-secondary">
+          <button
+            onClick={() => setView("Expenses")}
+            type="button"
+            className="btn btn-secondary"
+          >
             Expenses
           </button>
-          <button type="button" className="btn btn-primary">
+          <button
+            onClick={() => setView("Weeks")}
+            type="button"
+            className="btn btn-primary"
+          >
             Weeks
           </button>
         </div>
-        <WeeksView />
-        <ExpensesView />
+        {view === "Expenses" && <ExpensesView />}
+        {view === "Weeks" && <WeeksView />}
       </div>
     </div>
   );

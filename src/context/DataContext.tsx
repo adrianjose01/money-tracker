@@ -10,6 +10,7 @@ export const DataContext = createContext<{
   onClearList: () => void;
   weeks: IWeek[];
   postWeek: (week: IWeek) => void;
+  deleteWeek: (id: string) => void;
 }>({
   expenses: [],
   postExpense: () => {},
@@ -18,6 +19,7 @@ export const DataContext = createContext<{
   onClearList: () => {},
   weeks: [],
   postWeek: () => {},
+  deleteWeek: () => {},
 });
 
 interface Props {
@@ -79,6 +81,14 @@ const DataProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const deleteWeek = (id: string) => {
+    setWeeks((prevWeeks) => {
+      const newWeeks = prevWeeks.filter((week) => week.id !== id);
+      localStorage.setItem("weeks", JSON.stringify(newWeeks));
+      return newWeeks;
+    });
+  };
+
   const onClearList = () => {
     localStorage.removeItem("expenses");
     setExpenses([]);
@@ -99,6 +109,7 @@ const DataProvider: FC<Props> = ({ children }) => {
         onClearList,
         weeks,
         postWeek,
+        deleteWeek,
       }}
     >
       {children}

@@ -27,6 +27,7 @@ const ExpenseForm = () => {
     const newWeek: IWeek = {
       date: new Date().toLocaleDateString(),
       expenses,
+      id: uuidv4(),
     };
     postWeek(newWeek);
     onClearList();
